@@ -45,3 +45,8 @@ core-toolbar {
   width: 90%;
   height: 90%;
 }
+
+.social-buttons{
+  margin-top: 20px; 
+  margin-bottom: 20px;
+}
