@@ -40,13 +40,3 @@ core-toolbar {
   color: #FAFAFA;
   background-color: #009688;
 }
-
-.splash-image {
-  width: 90%;
-  height: 90%;
-}
-
-.social-buttons{
-  margin-top: 20px; 
-  margin-bottom: 20px;
-}

@@ -1,0 +1,22 @@
+
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<polymer-element name="splash-screen">
+	<template>
+		<link rel="stylesheet" href="../styles/splash-screen.css">
+
+    <div cross-fade fit>
+  		<core-image class="splash-image" src="http://lorempixel.com/1024/768/abstract" sizing="cover" preload layout center-justified center horizontal></core-image>
+  		<div class="social-buttons" layout horizontal around-justified>
+  			<paper-fab icon="social-post:gplus"></paper-fab>
+  			<paper-fab icon="social-post:twitter"></paper-fab>
+  			<paper-fab icon="social-post:facebook"></paper-fab>
+      </div>
+		</div>
+	</template>
+	<script>
+		Polymer('splash-screen', {
+
+		})
+	</script>
+</polymer-element>
