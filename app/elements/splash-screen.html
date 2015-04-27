@@ -1,22 +1,48 @@
-
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-
 <polymer-element name="splash-screen">
-	<template>
-		<link rel="stylesheet" href="../styles/splash-screen.css">
+    <template>
+        <link rel="stylesheet" href="../styles/splash-screen.css">
+        <div cross-fade fit>
+            <core-image class="splash-image" src="http://lorempixel.com/1024/768/people" sizing="cover" preload layout center-justified center horizontal></core-image>
+            <div class="social-buttons" layout horizontal around-justified>
+                <google-signin clientId="619614137462-jd18pca2v40f75clp7fuk0qe8g40r8pg.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/plus.login" on-google-signin-success="{{signinSuccess}}"></google-signin>
+                <paper-fab icon="social-post:twitter"></paper-fab>
+                <paper-fab icon="social-post:facebook"></paper-fab>
+            </div>
+        </div>
+    </template>
+    <script>
+    Polymer('splash-screen', {
 
-    <div cross-fade fit>
-  		<core-image class="splash-image" src="http://lorempixel.com/1024/768/abstract" sizing="cover" preload layout center-justified center horizontal></core-image>
-  		<div class="social-buttons" layout horizontal around-justified>
-  			<paper-fab icon="social-post:gplus"></paper-fab>
-  			<paper-fab icon="social-post:twitter"></paper-fab>
-  			<paper-fab icon="social-post:facebook"></paper-fab>
-      </div>
-		</div>
-	</template>
-	<script>
-		Polymer('splash-screen', {
+        signinSuccess: function(result, values) {
+            var gapi = values.gapi;
+            document.gapi = gapi;
+            document.app.user = {
+                name: values.user.B.ha,
+                avatar: values.user.B.wc,
+                username: values.user.B.B,
+            };
+            console.log('ss');
+           /* gapi.client.load('plus', 'v1', function() {
+                var request = gapi.client.plus.people.get({
+                    'userId': 'me'
+                });
 
-		})
-	</script>
+                request.execute(function(resp) {
+                    // Some useful profile information is now available
+                    // via the returned object (resp). For example, we
+                    // can discover the displayName, skills and so on.
+                    console.info(resp);
+                    document.app.user = {
+                        name: resp.displayName,
+                        avatar: resp.image.url,
+                        username: resp.username,
+                        data: resp
+                    };
+                });
+            });*/
+        },
+
+    });
+    </script>
 </polymer-element>

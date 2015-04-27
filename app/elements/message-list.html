@@ -1,8 +1,37 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<polymer-element name="message-list">
-	<template>
-		<p cross-fade>MESSAGE LIST</p>
-	</template>
-	<script>Polymer({})</script>
+<polymer-element name="message-list" attributes="user">
+    <template>
+        <core-toolbar cross-fade>
+            <core-image src="{{user.avatar}}"></core-image>
+            {{user.name}}
+        </core-toolbar>
+    </template>
+    <script>
+      Polymer('message-list', {
+
+          user: {},
+
+          observe: {
+              'app': 'appReady',
+          },
+
+          ready: function() {
+              this.user = {name: ''};
+              this.app = document.app;
+          },
+
+          appReady: function() {
+            var _this = this;
+              Object.observe(document.app, function(){
+                _this.user = document.app.user;
+              });
+          },
+
+          userReady: function() {
+              this.user.name = document.app.user.name;
+              console.log(document.app.user.name)
+          }
+      });
+    </script>
 </polymer-element>

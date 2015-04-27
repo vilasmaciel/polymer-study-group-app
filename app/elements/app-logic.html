@@ -1,21 +1,21 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-
 <polymer-element name="app-logic" attributes="view">
-  <script>Polymer({
+    <script>
+    Polymer({
+        publish: {
+            view: '',
+            user: {},
+        },
 
-    view: '',
-    user: '',
+        ready: function() {
+            this.view = 'splash-screen';
+            document.app = this;
+        },
 
-    ready: function() {
-      this.view = 'splash-screen';
-      this.user = '';
-      document.app = this;
-    },
+        userChanged: function() {
+            this.view = 'message-list';
+        }
 
-    userChanged: function() {
-      this.view = 'message-list';
-    }
-
-  })</script>
+    })
+    </script>
 </polymer-element>
-
