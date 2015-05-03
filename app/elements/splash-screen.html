@@ -1,7 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <polymer-element name="splash-screen">
     <template>
-        <link rel="stylesheet" href="../styles/splash-screen.css">
         <div cross-fade fit>
             <core-image class="splash-image" src="http://lorempixel.com/1024/768/people" sizing="cover" preload layout center-justified center horizontal></core-image>
             <div class="social-buttons" layout horizontal around-justified>
@@ -14,33 +13,32 @@
     <script>
     Polymer('splash-screen', {
 
-        signinSuccess: function(result, values) {
-            var gapi = values.gapi;
-            document.gapi = gapi;
+        signinSuccess: function(result) {
+            console.log(result);
+            var gapi = result.detail.gapi;
             document.app.user = {
-                name: values.user.B.ha,
-                avatar: values.user.B.wc,
-                username: values.user.B.B,
+                name: result.detail.user.B.ha,
+                avatar: result.detail.user.B.wc,
+                username: result.detail.user.B.B,
             };
-            console.log('ss');
-           /* gapi.client.load('plus', 'v1', function() {
-                var request = gapi.client.plus.people.get({
-                    'userId': 'me'
-                });
+            // gapi.client.load('plus', 'v1', function() {
+            //     var request = gapi.client.plus.people.get({
+            //         'userId': 'me'
+            //     });
 
-                request.execute(function(resp) {
-                    // Some useful profile information is now available
-                    // via the returned object (resp). For example, we
-                    // can discover the displayName, skills and so on.
-                    console.info(resp);
-                    document.app.user = {
-                        name: resp.displayName,
-                        avatar: resp.image.url,
-                        username: resp.username,
-                        data: resp
-                    };
-                });
-            });*/
+            //     request.execute(function(resp) {
+            //         // Some useful profile information is now available
+            //         // via the returned object (resp). For example, we
+            //         // can discover the displayName, skills and so on.
+            //         console.info(resp);
+            //         document.app.user = {
+            //             name: resp.displayName,
+            //             avatar: resp.image.url,
+            //             username: resp.username,
+            //             data: resp
+            //         };
+            //     });
+            // });
         },
 
     });

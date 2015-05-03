@@ -1,6 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-
-<polymer-element name="message-list" attributes="user">
+<polymer-element name="message-list">
     <template>
         <core-toolbar cross-fade>
             <core-image src="{{user.avatar}}"></core-image>
@@ -8,30 +7,19 @@
         </core-toolbar>
     </template>
     <script>
-      Polymer('message-list', {
+    Polymer('message-list', {
 
-          user: {},
+        user: {},
 
-          observe: {
-              'app': 'appReady',
-          },
-
-          ready: function() {
-              this.user = {name: ''};
-              this.app = document.app;
-          },
-
-          appReady: function() {
+        ready: function() {
             var _this = this;
-              Object.observe(document.app, function(){
-                _this.user = document.app.user;
-              });
-          },
+            var observer = new PathObserver(document.app, 'user');
+            observer.open(function(newValue, oldValue) {
+                _this.user = newValue;
+            });
+        }
 
-          userReady: function() {
-              this.user.name = document.app.user.name;
-              console.log(document.app.user.name)
-          }
-      });
+
+    });
     </script>
 </polymer-element>
