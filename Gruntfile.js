@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (grunt) {
+module.exports = function(grunt) {
   // show elapsed time at the end
   require('time-grunt')(grunt);
   // load all grunt tasks
@@ -10,7 +10,8 @@ module.exports = function (grunt) {
   // configurable paths
   var yeomanConfig = {
     app: 'app',
-    dist: 'dist'
+    dist: 'dist',
+    tmp: '.tmp'
   };
 
   grunt.initConfig({
@@ -23,22 +24,103 @@ module.exports = function (grunt) {
         files: [
           '<%= yeoman.app %>/*.html',
           '<%= yeoman.app %>/elements/{,*/}*.html',
-          '{.tmp,<%= yeoman.app %>}/elements/{,*/}*.{css,js}',
-          '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
-          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
+          '<%= yeoman.app %>/*.jade',
+          '<%= yeoman.app %>/elements/{,*/}*.jade',
+          '{<%= yeoman.tmp %>,<%= yeoman.app %>}/elements/{,*/}*.{css,js}',
+          '{<%= yeoman.tmp %>,<%= yeoman.app %>}/styles/{,*/}*.css',
+          '{<%= yeoman.tmp %>,<%= yeoman.app %>}/scripts/{,*/}*.js',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['jshint']
+        tasks: ['newer:jshint']
+      },
+      jade: {
+        files: ['<%= yeoman.app %>/*.jade', '<%= yeoman.app %>/elements/{,*/}*.jade'],
+        tasks: ['newer:jade:server']
       },
       styles: {
         files: [
           '<%= yeoman.app %>/styles/{,*/}*.css',
           '<%= yeoman.app %>/elements/{,*/}*.css'
         ],
-        tasks: ['copy:styles', 'autoprefixer:server']
+        tasks: ['newer:copy:styles', 'newer:autoprefixer:server']
+      },
+      sass: {
+        files: [
+          '<%= yeoman.app %>/styles/{,*/}*.{scss,sass}',
+          '<%= yeoman.app %>/elements/{,*/}*.{scss,sass}'
+        ],
+        tasks: ['newer:sass:server', 'newer:autoprefixer:server']
+      }
+    },
+    // Compiles Sass to CSS and generates necessary files if requested
+    sass: {
+      options: {
+        loadPath: 'bower_components'
+      },
+      dist: {
+        options: {
+          style: 'compressed'
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: ['styles/{,*/}*.{scss,sass}', 'elements/{,*/}*.{scss,sass}'],
+          dest: '<%= yeoman.dist %>',
+          ext: '.css'
+        }]
+      },
+      server: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: ['styles/{,*/}*.{scss,sass}', 'elements/{,*/}*.{scss,sass}'],
+          dest: '<%= yeoman.tmp %>',
+          ext: '.css'
+        }]
+      }
+    },
+    jade: {
+      dist: {
+        options: {
+          data: {
+            debug: true,
+            pretty: true
+          }
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: ['./*.jade', 'elements/{,*/}*.jade'],
+          dest: '<%= yeoman.dist %>',
+          ext: '.html'
+        }]
+      },
+      test: {
+        options: {
+          data: {
+            debug: true,
+            pretty: true
+          }
+        },
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: ['./*.jade', 'elements/{,*/}*.jade', 'test/{,*/}*.jade'],
+          dest: '<%= yeoman.tmp %>',
+          ext: '.html'
+        }]
+      },
+      server: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          src: ['./*.jade', 'elements/{,*/}*.jade'],
+          dest: '<%= yeoman.tmp %>',
+          ext: '.html'
+        }]
       }
     },
     autoprefixer: {
@@ -48,9 +130,9 @@ module.exports = function (grunt) {
       server: {
         files: [{
           expand: true,
-          cwd: '.tmp',
+          cwd: '<%= yeoman.tmp %>',
           src: '**/*.css',
-          dest: '.tmp'
+          dest: '<%= yeoman.tmp %>'
         }]
       },
       dist: {
@@ -73,14 +155,14 @@ module.exports = function (grunt) {
           watchTask: true,
           injectChanges: false, // can't inject Shadow DOM
           server: {
-            baseDir: ['.tmp', '<%= yeoman.app %>'],
+            baseDir: ['<%= yeoman.tmp %>', '<%= yeoman.app %>'],
             routes: {
               '/bower_components': 'bower_components'
             }
           }
         },
         src: [
-          '.tmp/**/*.{css,html,js}',
+          '<%= yeoman.tmp %>/**/*.{css,html,js}',
           '<%= yeoman.app %>/**/*.{css,html,js}'
         ]
       },
@@ -97,8 +179,8 @@ module.exports = function (grunt) {
       }
     },
     clean: {
-      dist: ['.tmp', '<%= yeoman.dist %>/*'],
-      server: '.tmp'
+      dist: ['<%= yeoman.tmp %>', '<%= yeoman.dist %>/*'],
+      server: '<%= yeoman.tmp %>'
     },
     jshint: {
       options: {
@@ -159,23 +241,6 @@ module.exports = function (grunt) {
         }]
       }
     },
-    cssmin: {
-      main: {
-        files: {
-          '<%= yeoman.dist %>/styles/main.css': [
-            '.tmp/concat/styles/{,*/}*.css'
-          ]
-        }
-      },
-      elements: {
-        files: [{
-          expand: true,
-          cwd: '.tmp/elements',
-          src: '{,*/}*.css',
-          dest: '<%= yeoman.dist %>/elements'
-        }]
-      }
-    },
     minifyHtml: {
       options: {
         quotes: true,
@@ -203,8 +268,10 @@ module.exports = function (grunt) {
             '.htaccess',
             '*.html',
             'elements/**',
-            '!elements/**/*.css',
-            'images/{,*/}*.{webp,gif}'
+            '!elements/**/*.scss',
+            'images/{,*/}*.{webp,gif}',
+            '!./*.jade',
+            '!elements/{,*/}*.jade'
           ]
         }, {
           expand: true,
@@ -217,7 +284,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>',
-          dest: '.tmp',
+          dest: '<%= yeoman.tmp %>',
           src: ['{styles,elements}/{,*/}*.css']
         }]
       }
@@ -252,18 +319,20 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('server', function (target) {
+  grunt.registerTask('server', function(target) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve:' + target]);
   });
 
-  grunt.registerTask('serve', function (target) {
+  grunt.registerTask('serve', function(target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'browserSync:dist']);
     }
 
     grunt.task.run([
       'clean:server',
+      'sass:server',
+      'jade:server',
       'copy:styles',
       'autoprefixer:server',
       'browserSync:app',
@@ -271,18 +340,19 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('test:local', ['wct-test:local']);
-  grunt.registerTask('test:remote', ['wct-test:remote']);
+  grunt.registerTask('test:local', ['clean:server', 'jade:test', 'wct-test:local']);
+  grunt.registerTask('test:remote', ['clean:server', 'jade:test', 'wct-test:remote']);
 
   grunt.registerTask('build', [
     'clean:dist',
+    'sass',
+    'jade:dist',
     'copy',
     'useminPrepare',
     'imagemin',
     'concat',
     'autoprefixer',
     'uglify',
-    'cssmin',
     'vulcanize',
     'usemin',
     'replace',

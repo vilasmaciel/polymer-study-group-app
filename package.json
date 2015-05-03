@@ -1,5 +1,5 @@
 {
-  "name": "polymer-study-group-app",
+  "name": "todelete",
   "version": "0.0.0",
   "dependencies": {},
   "devDependencies": {
@@ -13,10 +13,13 @@
     "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-cssmin": "^0.10.0",
     "grunt-contrib-imagemin": "^0.9.2",
+    "grunt-contrib-jade": "^0.14.0",
     "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-sass": "^0.8.1",
     "grunt-contrib-uglify": "^0.6.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-minify-html": "^1.1.1",
+    "grunt-newer": "^1.1.0",
     "grunt-pagespeed": "^0.3.0",
     "grunt-replace": "^0.8.0",
     "grunt-rev": "^0.1.0",

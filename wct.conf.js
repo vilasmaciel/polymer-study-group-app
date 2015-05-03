@@ -1,4 +1,4 @@
 module.exports = {
   root: '.',
-  suites: ['app/test']
+  suites: ['.tmp/test']
 };

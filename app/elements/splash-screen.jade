@@ -1,17 +1,20 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<polymer-element name="splash-screen">
-    <template>
-        <div cross-fade fit>
-            <core-image class="splash-image" src="http://lorempixel.com/1024/768/people" sizing="cover" preload layout center-justified center horizontal></core-image>
-            <div class="social-buttons" layout horizontal around-justified>
-                <google-signin clientId="619614137462-jd18pca2v40f75clp7fuk0qe8g40r8pg.apps.googleusercontent.com" scopes="https://www.googleapis.com/auth/plus.login" on-google-signin-success="{{signinSuccess}}"></google-signin>
-                <paper-fab icon="social-post:twitter"></paper-fab>
-                <paper-fab icon="social-post:facebook"></paper-fab>
-            </div>
-        </div>
-    </template>
-    <script>
-    Polymer('splash-screen', {
+link(rel="import", href="../../../bower_components/polymer/polymer.html")
+
+polymer-element(name="splash-screen", attributes="")
+  template
+    div(cross-fade, fit)
+      core-image(class="splash-image" src="http://lorempixel.com/1024/768/people" sizing="cover"
+                 preload layout center-justified center horizontal)
+      div(class="social-buttons" layout horizontal around-justified)
+        google-signin(clientId="619614137462-jd18pca2v40f75clp7fuk0qe8g40r8pg.apps.googleusercontent.com"
+                      scopes="https://www.googleapis.com/auth/plus.login"
+                      on-google-signin-success="{{signinSuccess}}")
+        paper-fab(icon="social-post:twitter")
+        paper-fab(icon="social-post:facebook")
+
+  script.
+    (function () {
+      Polymer({
 
         signinSuccess: function(result) {
             console.log(result);
@@ -39,8 +42,7 @@
             //         };
             //     });
             // });
-        },
+        }
 
-    });
-    </script>
-</polymer-element>
+      });
+    })();

@@ -1,0 +1,23 @@
+link(rel="import", href="../../../bower_components/polymer/polymer.html")
+
+polymer-element(name="message-list", attributes="user")
+  template
+    core-toolbar
+      core-image(src="{{user.avatar}}", sizing="contain")
+      {{user.name}}
+
+
+  script.
+    (function () {
+      Polymer({
+
+        ready: function() {
+          var _this = this;
+          var observer = new PathObserver(document.app, 'user');
+          observer.open(function(newValue, oldValue) {
+            _this.user = newValue;
+          });
+        }
+
+      });
+    })();

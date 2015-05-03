@@ -1,7 +1,15 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<polymer-element name="app-logic" attributes="view">
-    <script>
-    Polymer({
+link(rel="import", href="../../../bower_components/polymer/polymer.html")
+
+polymer-element(name="app-logic", attributes="view")
+  template
+    style.
+      :host {
+        display: block;
+      }
+
+  script.
+    (function () {
+      Polymer({
         publish: {
             view: '',
             user: {},
@@ -16,7 +24,5 @@
             console.log(document.app.user);
             this.view = 'message-list';
         }
-
-    })
-    </script>
-</polymer-element>
+      });
+    })();
