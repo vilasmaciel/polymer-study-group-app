@@ -1,3 +1,5 @@
+## No longer maintained
+
 # polymer-study-group-app
 
 Simple application developed during the Polymer Study Group.
